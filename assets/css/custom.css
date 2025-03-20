@@ -1,0 +1,227 @@
+:root{
+--nav-link: rgb(8,84,48);
+--nav-link-active: rgb(15, 163, 94);
+--nav-link-header: rgb(1, 3, 1);
+--light: rgb(87, 255, 171);
+}
+
+.rounded-lg {
+  border-radius: 0.95rem !important;
+  color: #2d573233;
+}
+
+.nav-link-default{
+    color: var(--nav-link);
+}
+
+.nav-link-active{
+    color: var(--nav-link-active);
+}
+
+.nav-link-header{
+    color: var(--nav-link-header);
+}
+
+.main-sidebar
+{
+  background: linear-gradient(180deg, rgba(205,255,216,1) 0%, rgb(80, 177, 101) 90%);
+  color: rgba(96, 146, 187, 0.3);
+}
+
+.login-logo img{
+    height: 10rem;
+}
+
+.auth-container {
+  width: 100%;
+  height: 100vh;
+  margin-right: auto;
+  margin-left: auto;
+  overflow: hidden;
+  background-color: #58ff6c33;
+}
+
+.access_logo{
+  height: 75px;
+  width: 75px;
+  object-fit: fill;
+}
+
+.bgParkingCard {
+  background: rgba(232, 255, 235, 0.616) !important;
+}
+
+.custom-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('../images/right-arrow-svgrepo-com.svg');
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: .8em auto, 100%;
+  padding-right: 2.5em; 
+  transition: all 0.3s ease; 
+}
+
+
+#studentEntrySection.hidden {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease, height 0s linear 0.5s;
+}
+
+#vehicleEntrySection.hidden {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease, height 0s linear 0.5s;
+}
+
+#studentEntrySection,
+#vehicleEntrySection {
+  opacity: 1;
+  height: auto;
+  overflow: visible;
+  transition: opacity 0.5s ease;
+}
+
+.text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg {
+  text-align: left;
+}
+.text-center-not-xs, .text-center-not-sm, .text-center-not-md, .text-center-not-lg {
+  text-align: center;
+}
+.text-right-not-xs, .text-right-not-sm, .text-right-not-md, .text-right-not-lg {
+  text-align: right;
+}
+.text-justify-not-xs, .text-justify-not-sm, .text-justify-not-md, .text-justify-not-lg {
+  text-align: justify;
+}
+
+@media (max-width: 767px) {
+  .text-left-not-xs, .text-center-not-xs, .text-right-not-xs, .text-justify-not-xs {
+      text-align: inherit;
+  }
+  .text-left-xs {
+      text-align: left;
+  }
+  .text-center-xs {
+      text-align: center;
+  }
+  .text-right-xs {
+      text-align: right;
+  }
+  .text-justify-xs {
+      text-align: justify;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .text-left-not-sm, .text-center-not-sm, .text-right-not-sm, .text-justify-not-sm {
+      text-align: inherit;
+  }
+  .text-left-sm {
+      text-align: left;
+  }
+  .text-center-sm {
+      text-align: center;
+  }
+  .text-right-sm {
+      text-align: right;
+  }
+  .text-justify-sm {
+      text-align: justify;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .text-left-not-md, .text-center-not-md, .text-right-not-md, .text-justify-not-md {
+      text-align: inherit;
+  }
+  .text-left-md {
+      text-align: left;
+  }
+  .text-center-md {
+      text-align: center;
+  }
+  .text-right-md {
+      text-align: right;
+  }
+  .text-justify-md {
+      text-align: justify;
+  }
+}
+@media (min-width: 1200px) {
+  .text-left-not-lg, .text-center-not-lg, .text-right-not-lg, .text-justify-not-lg {
+      text-align: inherit;
+  }
+  .text-left-lg {
+      text-align: left;
+  }
+  .text-center-lg {
+      text-align: center;
+  }
+  .text-right-lg {
+      text-align: right;
+  }
+  .text-justify-lg {
+      text-align: justify;
+  }
+}
+
+.waves {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    min-height:35vh;
+    max-height:30vh;
+  }
+  
+  .content {
+    position:relative;
+    height:100vh;
+    text-align:center;
+    background-color: white;
+  }
+  
+  /* Animation */
+  
+  .parallax > use {
+    animation: move-forever 25s cubic-bezier(.55,.5,.45,.5)     infinite;
+  }
+  .parallax > use:nth-child(1) {
+    animation-delay: -2s;
+    animation-duration: 7s;
+  }
+  .parallax > use:nth-child(2) {
+    animation-delay: -3s;
+    animation-duration: 10s;
+  }
+  .parallax > use:nth-child(3) {
+    animation-delay: -4s;
+    animation-duration: 13s;
+  }
+  .parallax > use:nth-child(4) {
+    animation-delay: -5s;
+    animation-duration: 20s;
+  }
+  @keyframes move-forever {
+    0% {
+     transform: translate3d(-90px,0,0);
+    }
+    100% { 
+      transform: translate3d(85px,0,0);
+    }
+  }
+  /*Shrinking for mobile*/
+  @media (max-width: 768px) {
+    .waves {
+      height:50px;
+      min-height:80px;
+    }
+    .content {
+      height:50vh;
+    }
+    h1 {
+      font-size:24px;
+    }
+  }

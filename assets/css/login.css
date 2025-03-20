@@ -1,0 +1,90 @@
+.auth-container{
+    height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-container img{
+    width: 10rem;
+    height: 10rem;
+    margin-bottom: 20px;
+}
+
+.auth-card{
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+.auth-card button#submit-btn{
+    color: white;
+    background-color: rgb(111,25,38);
+    transition: background-color ease .25s;
+}
+
+.auth-card button#submit-btn:hover{
+    background-color: rgb(153, 42, 59);
+}
+
+.auth-card button#submit-btn:focus{
+    border: none;
+    outline: none;
+}
+
+.auth-card a#company_name{
+    color: grey;
+    font-style: none;
+    text-decoration: none;
+}
+
+.auth-card a#company_name:hover{
+    color: rgb(24, 143, 255);
+}
+
+.auth-container input{
+    color: hsl(0, 0%, 13%);
+    text-align: start;
+    padding: 15px;
+    outline: none;
+    border: 1px solid hsla(0, 0%, 80%, 0.507);
+    border-radius: 10px;
+    box-shadow: 0px 0px 8px 0px hsl(0, 0%, 89%);
+    transition: background-color ease .5s;
+    margin-bottom: 16px;
+}
+
+.auth-container input:focus{
+    background-color: hsl(0, 0%, 100%);
+    outline: 2px solid hsla(0, 0%, 16%, 0.507);
+    box-shadow: 0px 0px 20px 0px hsl(0, 0%, 100%);
+    border: none;
+}
+
+.wave-container {
+    position: absolute;
+    width: 100%;
+    height: 250px; /* Adjust as needed */
+    overflow: hidden;
+    bottom: 0;
+    z-index: -1;
+}
+.wave {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-20%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.auth-container img{  
+    /* This section calls the slideInFromLeft animation we defined above */
+    animation: 1.5s ease 0s 1 slideInFromTop;
+}

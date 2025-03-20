@@ -1,0 +1,218 @@
+<style>
+    body{
+    }
+    
+    #editVisitorForm{
+        padding: 20px;
+    }
+
+    form label{
+        font-size: .9rem;
+    }
+    
+    input, .input-group-text, select{
+        font-size: .9rem !important
+    }
+
+    img#user-image{
+        border-radius: 100%;
+        height: 200px;
+        width: 200px;
+    }
+
+    .user-id img{
+        width: 15rem;
+        height: 12rem;
+        
+    }
+
+</style>
+
+<?= form_open('admin/visit_management/visitors_active/update/', ['id' => 'editVisitorForm']) ?>
+<div class="row mb-2">
+    <div class="col-sm-12 mb-2 text-center">
+        <p>User Image</p>
+        <img id="user-image"src="<?= base_url($visitor['image']); ?>" alt="Visitor Image" class="rounded-full">
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-sm-6 mb-2">
+        <label for="first_name">First Name</label>
+        <input class="form-control" name="first_name" id="first_name" type="text" value="<?= $visitor['first_name'] ?>" readonly>
+    </div>
+    <div class="col-sm-6 mb-2">
+        <label for="middle_name">Middle Name (Optional)</label>
+        <input class="form-control" name="middle_name" id="middle_name" type="text" value="<?= $visitor['middle_name'] ?>" readonly>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-sm-6 mb-2">
+        <label for="last_name">Last Name</label>
+        <input class="form-control" name="last_name" id="last_name" type="text" value="<?= $visitor['last_name'] ?>" readonly>
+    </div>
+    <div class="col-sm-6 mb-2">
+        <label for="suffix">Suffix (Optional)</label>
+        <input class="form-control" name="suffix" id="suffix" type="text" value="<?= $visitor['suffix'] ?>" readonly>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-sm-6 mb-2">
+        <label for="phone_number">Phone Number</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">+63</span>
+            </div>
+            <input type="text" name="phone_number" class="form-control" id="phone_number" value="<?= $visitor['phone_number'] ?>" readonly>
+        </div>
+    </div>
+    <div class="col-sm-6 mb-2">
+        <label for="email">Email</label>
+        <input class="form-control" name="email" id="email" type="email" value="<?= $visitor['email'] ?>" readonly>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-6 mb-2">
+        <label for="company">Company</label>
+        <input type="text" name="company" class="form-control" value="<?= $visitor['company'] ?>" readonly>
+    </div>
+    <div class="col-md-6 mb-2">
+        <label for="id_type">ID Type</label>
+        <select name="id_type" id="id_type" class="form-control" disabled>
+            <option value="">Select ID Type</option>
+            <option value="None" <?= $visitor['id_type'] == 'None' ? 'selected' : '' ?>>None</option>
+            <option value="National ID" <?= $visitor['id_type'] == 'National ID' ? 'selected' : '' ?>>National ID</option>
+            <option value="ePhilID" <?= $visitor['id_type'] == 'ePhilID' ? 'selected' : '' ?>>Philippine Identification (PhilID / ePhilID)</option>
+            <option value="SSS" <?= $visitor['id_type'] == 'SSS' ? 'selected' : '' ?>>SSS / UMID</option>
+            <option value="Passport" <?= $visitor['id_type'] == 'Passport' ? 'selected' : '' ?>>Passport</option>
+            <option value="Driver's License" <?= $visitor['id_type'] == 'Driver\'s License' ? 'selected' : '' ?>>Driver's License</option>
+            <option value="PWD ID" <?= $visitor['id_type'] == 'PWD ID' ? 'selected' : '' ?>>PWD ID</option>
+            <option value="Barangay ID" <?= $visitor['id_type'] == 'Barangay ID' ? 'selected' : '' ?>>Barangay ID</option>
+            <option value="Phil-health ID" <?= $visitor['id_type'] == 'Phil-health ID' ? 'selected' : '' ?>>Phil-health ID</option>
+        </select>
+    </div>
+    <div class="col-md-6 mb-2">
+        <label for="id_number">ID Number</label>
+        <input type="text" name="id_number" class="form-control" value="<?= $visitor['id_number'] ?>" readonly>
+    </div>
+</div>
+
+
+<!-- <div class="row mb-2 user-id">
+    <div class="col-sm-6 mb-2 text-center">
+        <label for="id_front">Photo of ID (Front)</label>
+        <img src="<?= empty($visitor['id_front']) ? base_url('assets/images/id-card-color-icon.png') : $visitor['id_front'] ?>" alt="Photo of front ID" class="img-fluid">
+    </div>
+    <div class="col-sm-6 mb-2 text-center">
+        <label for="id_back">Photo of ID (Back)</label>
+        <img src="<?= empty($visitor['id_back']) ? base_url('assets/images/id-card-color-icon-back.png') : $visitor['id_back'] ?>" alt="Photo of front ID" class="img-fluid">
+    </div>
+</div> -->
+
+<div class="row mb-2">
+    <div class="col-md-6 mb-2">
+        <label for="visit_purpose">Purpose of Visit</label>
+        <input type="text" name="visit_purpose" class="form-control" value="<?= $visitor['visit_purpose'] ?>" readonly>
+    </div>
+    <div class="col-md-6 mb-2">
+        <label for="visit_date">Date of Visit</label>
+        <input type="date"
+            name="visit_date" 
+            class="form-control <?= (form_error('visit_date')) ? 'is-invalid' : '' ?>"
+            value="<?= isset($visitor['visit_date']) ? $visitor['visit_date'] : set_value('visit_date') ?>"
+            min="<?= date('Y-m-d') ?>" readonly> <!-- Sets the minimum date to today -->
+    </div>
+    <div class="col-md-6 mb-2">
+        <label for="visit_time">Time of Visit</label>
+        <select name="visit_time" id="visit_time" class="form-control <?= (form_error('visit_time')) ? 'is-invalid' : '' ?>" disabled>
+            <?php 
+                $selected_time = isset($visitor['visit_time']) ? $visitor['visit_time'] : set_value('visit_time');
+                $times = [];
+
+                for ($i = 8 ; $i < 18; $i++) {
+                    $hour24 = str_pad($i, 2, '0', STR_PAD_LEFT) . ':00:00';
+                    $hour12 = $i == 0 ? 12 : ($i > 12 ? $i - 12 : $i);
+                    $period = $i < 12 ? 'AM' : 'PM';
+                    $formatted_hour12 = str_pad($hour12, 2, '0', STR_PAD_LEFT) . ':00' . $period;
+                    $times[$hour24] = $formatted_hour12;
+                }
+
+                foreach ($times as $hour24 => $hour12) {
+                    $selected = $selected_time === $hour24 ? 'selected' : '';
+                    echo "<option value=\"$hour24\" $selected>$hour12</option>";
+                }
+            ?>
+        </select>
+        <?php if (form_error('visit_time')): ?>
+            <span class="text-danger"><?= form_error('visit_time') ?></span>
+        <?php endif; ?>
+    </div>
+    <div class="col-md-6 mb-2">
+        <label for="visit_duration">Estimated duration of visit</label>
+        <select name="visit_duration" id="visit_duration" class="form-control <?= (form_error('visit_duration')) ? 'is-invalid' : '' ?>" disabled>
+            <option value="" selected>Select estimated duration</option>
+            <option value="Less than an hour" <?= set_select('visit_duration', 'Less than an hour', isset($visitor['visit_duration']) && $visitor['visit_duration'] == 'Less than an hour'); ?>>Less than an hour</option>
+            <option value="1 - 2 hours" <?= set_select('visit_duration', '1 - 2 hours', isset($visitor['visit_duration']) && $visitor['visit_duration'] == '1 - 2 hours'); ?>>1 - 2 hours</option>
+            <option value="3 - 4 hours" <?= set_select('visit_duration', '3 - 4 hours', isset($visitor['visit_duration']) && $visitor['visit_duration'] == '3 - 4 hours'); ?>>3 - 4 hours</option>
+            <option value="Half Day" <?= set_select('visit_duration', 'Half Day', isset($visitor['visit_duration']) && $visitor['visit_duration'] == 'Half Day'); ?>>Half Day</option>
+            <option value="Full Day" <?= set_select('visit_duration', 'Full Day', isset($visitor['visit_duration']) && $visitor['visit_duration'] == 'Full Day'); ?>>Full Day</option>
+        </select>
+        <div class="invalid-feedback"><?php echo form_error('visit_duration'); ?></div>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-6 mb-2">
+        <label for="contact_department">Department of Person meeting with</label>
+        <select class="form-control" id="contact_department" name="contact_department" disabled>
+            <option value="">Select Department</option>
+            <?php foreach($departments as $department): ?>
+                <option value="<?= $department->id ?>" <?= set_select('contact_department', $department->id, isset($visitor['contact_department']) && $visitor['contact_department'] == $department->id); ?> ><?= $department->name ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="col-md-6 mb-2">
+        <label for="contact_person">Name of Person meeting with</label>
+        <select name="contact_person" id="contact_person" class="form-control" disabled>
+        <option value="" <?= set_select('contact_person', '', !isset($visitor['contact_person']) || empty($visitor['contact_person'])); ?>>Select contact person name</option>
+            <?php if (isset($visitor['contact_person'])): ?>
+                    <option selected value="<?=$visitor['contact_person'] ?>" <?= set_select('contact_person', $visitor['contact_person']); ?>>
+                        <?= $visitor['contact_person'] ?>
+                    </option>
+            <?php endif; ?>
+        </select>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-6 mb-2">
+        <label for="emergency_contact_person">Emergency Contact Person</label>
+        <input readonly class="form-control" name="emergency_contact_person" id="emergency_contact_person" type="text" value="<?= isset($visitor['emergency_contact_person']) ? $visitor['emergency_contact_person'] : '' ?>">
+    </div>
+
+    <div class="col-sm-6 mb-2">
+        <label for="emergency_contact_number">Emergency Contact Number</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">+63</span>
+            </div>
+            <input type="text" name="emergency_contact_number" class="form-control" id="emergency_contact_number" value="<?= $visitor['emergency_contact_number'] ?>" readonly>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-6 mb-2">
+        <label for="rfid">RFID</label>
+        <input class="form-control" name="rfid" id="rfid" type="text" value="<?= isset($visitor['rfid']) ? $visitor['rfid'] : '' ?>" readonly>
+    </div>
+</div>
+
+<div class="d-flex mt-5">
+    <button id="save-btn" class="btn btn-primary ml-auto">Close</button>
+    <input class="form-control" name="old_rfid" id="old_rfid" type="hidden" value="<?= $visitor['rfid']; ?>">
+</div>
+<?= form_close() ?>

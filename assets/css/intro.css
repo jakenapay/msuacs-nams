@@ -1,0 +1,190 @@
+body{
+    background: url('../images/intro_backdrop.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    margin: 0;
+    color: white;
+}
+
+@font-face {
+    font-family: 'Work Sans-Bold';
+    src: url('./fonts/WorkSans-SemiBold.ttf') format('truetype');
+    /* Add additional styles for different font weights if available */
+}
+
+.header h1{
+    font-family: 'Work Sans-Bold';
+    text-transform: uppercase;
+    font-size: 3rem;
+    line-height: 3rem;
+    margin: auto;
+}
+
+.sub-header h1{
+    letter-spacing: 1px;
+}
+
+#container img{
+    width: 120px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+hr {
+    opacity: .2;
+    position: relative;
+    border: none;
+    height: 0px;
+    background: linear-gradient(to right, transparent, rgb(131, 131, 131), transparent);
+    min-width: 22vw;
+    margin: 20px 0;
+}
+
+.page-body p{
+    font-size: 1.1rem;
+}
+
+#container {
+    width: 80%; 
+    max-width: 1000px; 
+    padding: 100px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.page-footer button#start-btn{
+    font-size: .9rem;
+    border: none;
+    padding: 15px 50px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: hsl(359, 98%, 20%);
+    color: white;
+    transition: background-color ease .5s;
+}
+
+.page-footer button#view-btn{
+    font-size: .9rem;
+    border: none;
+    padding: 15px 50px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: hsl(0, 0%, 18%);
+    color: white;
+    transition: background-color ease .5s;
+}
+
+.page-footer button:hover#start-btn{
+    background-color: hsl(359, 92%, 15%);
+}
+
+.page-footer button:hover#view-btn{
+    background-color: hsl(0, 0%, 13%);
+}
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-20%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.header, .sub-header,  #container img{  
+    /* This section calls the slideInFromLeft animation we defined above */
+    animation: 1.5s ease 0s 1 slideInFromTop;
+}
+
+
+@keyframes slideInFromBotton{
+    0% {
+        transform: translateY(30%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.page-body, .page-footer button {  
+    /* This section calls the slideInFromBotton animation we defined above */
+    animation: 1.5s ease 0s 1 slideInFromBotton;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.page-footer button{
+    /* This section calls the fadeIn animation we defined above */
+    animation: 2s ease-in 0s 1 fadeIn;
+}
+
+/****************RESPONSIVE STYLES******************/
+/* Small devices (portrait tablets and large phones, 600px between 992px) */
+@media only screen and (min-width: 600px) {
+
+    
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .header h1{
+        font-family: 'Work Sans-Bold';
+        text-transform: uppercase;
+        font-size: 6rem;
+        line-height: 3rem;
+        letter-spacing: 5px;
+    }
+
+    .sub-header{
+        letter-spacing: 3px;
+    }
+
+    body{
+        height: 100vh;
+    }
+
+    .page-footer button#start-btn{
+        font-size: .9rem;
+        border: none;
+        width: 12rem;
+        padding: 15px 0px;
+        transition: background-color ease .5s;
+        margin-right: 10px;
+    }
+
+    .page-footer button#view-btn{
+        font-size: .9rem;
+        border: none;
+        width: 12rem;
+        padding: 15px 0px;
+        cursor: pointer;
+        border-radius: 10px;
+        color: white;
+        transition: background-color ease .5s;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
+}
+
+
+

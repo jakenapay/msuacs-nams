@@ -1,0 +1,365 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class DataTransfer extends CI_Controller {
+
+    public function __construct() {
+        parent::__construct();
+        // Load necessary models and helpers
+        $this->load->helper('form');
+        $this->load->library(['form_validation', 'session']);
+        $this->load->model('StudentsModel');
+        $this->load->database();
+    }
+
+
+    // Export students data to LRS system
+    public function exportStudents() {
+        $studentsData = $this->StudentsModel->get_all();
+
+        if (!$studentsData) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(404)
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => 'No students data found'
+                ]));
+        }
+
+        $apiKey = $this->input->get_request_header('API-Key');
+        $validApiKey = $this->config->item('api_key');
+
+        if ($apiKey !== $validApiKey) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(401)
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => 'Unauthorized'
+                ]));
+        }
+
+        $formattedData = array_map(function($student) {
+            return [
+                'first_name' => $student->first_name,
+                'middle_name' => $student->middle_name,
+                'last_name' => $student->last_name,
+                'id_number' => $student->id_number,
+                'college' => $student->college,
+                'department' => $student->department,
+                'program' => $student->program,
+                'enrollment_status' => $student->enrollment_status,
+                'assigned_dormitory' => $student->assigned_dormitory,
+                'resident_status' => $student->resident_status,
+                'rfid' => $student->rfid,
+                'emergency_contact_person' => $student->emergency_contact_person,
+                'emergency_contact_number' => $student->emergency_contact_number,
+                'is_banned' => $student->is_banned,
+                'location' => $student->location,
+                'banned_location' => $student->banned_location,
+                'ban_reason' => $student->ban_reason,
+                'indicator' => $student->indicator
+            ];
+        }, $studentsData);
+
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'status' => 'success',
+                'message' => 'Data export succeeded',
+                'data' => $formattedData
+            ]));
+    }
+
+    // Requesting token to the SAIS API
+    public function requestToken() {
+        
+        // Prepare the request payload
+        $payload = json_encode([
+            'username' => $this->config->item('auth_username_key'),
+            'secret' => $this->config->item('auth_secret_key')
+        ]);
+    
+        // Initialize cURL session
+        $ch = curl_init();
+    
+        // Set cURL options
+        curl_setopt_array($ch, [
+            CURLOPT_URL => "https://api.sandbox.centralizedinc.com/iam/v1.0/integrations/auth",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => [
+                "Content-Type: application/json",
+                "Accept: application/json"
+            ]
+        ]);
+    
+        // Execute cURL request
+        $response = curl_exec($ch);
+        $err = curl_error($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    
+        // Close cURL session
+        curl_close($ch);
+    
+        // Handle cURL errors
+        if ($err) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'code' => 500,
+                    'message' => 'Failed to request token: ' . $err,
+                    'data' => null
+                ]));
+        }
+    
+        // Decode JSON response
+        $result = json_decode($response, true);
+        
+        // Check if JSON is valid
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'code' => 500,
+                    'message' => 'Invalid JSON response from server',
+                    'data' => null
+                ]));
+        }
+    
+        // Handle different response codes
+        if ($httpCode !== 200) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header($httpCode)
+                ->set_output(json_encode([
+                    'code' => $httpCode,
+                    'message' => isset($result['message']) ? $result['message'] : 'Server error occurred',
+                    'data' => null
+                ]));
+        }
+    
+        // Check if token exists in response
+        if (!isset($result['data']['token'])) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'code' => 500,
+                    'message' => 'Token not found in response',
+                    'data' => null
+                ]));
+        }
+    
+        // Success response
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'code' => 200,
+                'message' => isset($result['message']) ? $result['message'] : 'Login Successful',
+                'data' => [
+                    'token' => $result['data']['token']
+                ]
+            ]));
+    }
+
+    public function insertData($tableName, $data) {
+        if (!empty($tableName) && !empty($data)) {
+            try {
+            return $this->db->insert($tableName, $data);
+            } catch (Exception $e) {
+            log_message('error', 'Database insertion error: ' . $e->getMessage());
+            return false;
+            }
+        }
+        return false;
+    }
+
+    // Get all students/faculty/staff/office/program/department/college data from the SAIS API
+    public function getAllData($param) {
+        // First get the token
+        $tokenResponse = $this->requestToken();
+        $tokenData = json_decode($tokenResponse->final_output, true);
+        
+        if (!isset($tokenData['data']['token'])) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(401)
+                ->set_output(json_encode([
+                    'code' => 401,
+                    'message' => 'Failed to obtain token',
+                    'data' => null
+                ]));
+        }
+
+        $token = $tokenData['data']['token'];
+
+        // Define valid endpoints and their corresponding config items
+        $validEndpoints = [
+            'students' => 'get_all_students',
+            'faculty' => 'get_all_faculty',
+            'staff' => 'get_all_staff',
+            'offices' => 'get_all_office',
+            'programs' => 'get_all_programs',
+            'departments' => 'get_all_departments',
+            'colleges' => 'get_all_college'
+        ];
+
+        // Validate parameter and get API URL
+        if (!$param || !array_key_exists($param, $validEndpoints)) {
+            return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(400)
+            ->set_output(json_encode([
+                'code' => 400,
+                'message' => 'Invalid endpoint parameter provided',
+                'data' => null
+            ]));
+        }
+
+        $api_url = $this->config->item($validEndpoints[$param]);
+        
+        // Initialize cURL session
+        $ch = curl_init();
+
+        // Set cURL options
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $api_url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => [
+                "Accept: application/json",
+                "Authorization: Bearer " . $token
+            ]
+        ]);
+
+        // Execute cURL request
+        $response = curl_exec($ch);
+        $err = curl_error($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        // Close cURL session
+        curl_close($ch);
+
+        if ($err) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'code' => 500,
+                    'message' => 'Failed to fetch data: ' . $err,
+                    'data' => null
+                ]));
+        }
+
+        // Store the response in $data
+                // Decode and validate response
+        $data = json_decode($response, true);
+        
+        // Initialize counters
+        $inserted = 0;
+        $failed = 0;
+        
+        // Check if data exists and has rows
+        if (!isset($data['data']['rows']) || !is_array($data['data']['rows'])) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(400)
+                ->set_output(json_encode([
+                    'code' => 400,
+                    'message' => 'Invalid or empty data structure',
+                    'data' => null
+                ]));
+        }
+        
+        // Process each row
+        foreach ($data['data']['rows'] as $row) {
+            // Validate and insert college if it doesn't exist
+            if (isset($row['college']) && !empty($row['college'])) {
+            $college_exists = $this->db
+                ->where('name', $row['college'])
+                ->get('colleges')
+                ->num_rows();
+
+            if (!$college_exists) {
+                $college_data = [
+                'name' => $row['college'],
+                'created_at' => date('Y-m-d H:i:s')
+                ];
+                $this->db->insert('colleges', $college_data);
+            }
+            }
+
+            // Format data for insertion
+            $formattedData = [
+            'first_name' => isset($row['first_name']) ? $row['first_name'] : null,
+            'last_name' => isset($row['last_name']) ? $row['last_name'] : null,
+            'middle_name' => isset($row['middle_name']) ? $row['middle_name'] : null,
+            'image' => isset($row['image']) ? $row['image'] : "test",
+            'id_number' => isset($row['id_number']) ? $row['id_number'] : null,
+            'rfid' => isset($row['rfid']) ? $row['rfid'] : null,
+            'enrollment_status' => isset($row['enrollment_status']) ? $row['enrollment_status'] : 0,
+            'resident_status' => isset($row['resident_status']) ? $row['resident_status'] : 0,
+            'emergency_contact_person' => isset($row['emergency_contact_person']) ? $row['emergency_contact_person'] : "test",
+            'emergency_contact_number' => isset($row['emergency_contact_number']) ? $row['emergency_contact_number'] : "9999999999",
+            'college' => isset($row['college']) ? $row['college'] : null,
+            'updated_at' => date('Y-m-d H:i:s')
+            ];
+        
+            // Check if record exists
+            $exists = $this->db
+            ->where('id_number', $row['id_number'])
+            ->get($param)
+            ->num_rows();
+        
+            if ($exists) {
+            // Update
+            $result = $this->db
+                ->where('id_number', $row['id_number'])
+                ->update($param, $formattedData);
+            } else {
+            // Insert
+            $formattedData['created_at'] = date('Y-m-d H:i:s');
+            $result = $this->db->insert($param, $formattedData);
+            }
+        
+            $result ? $inserted++ : $failed++;
+        }
+        
+        // Return response
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'code' => 200,
+                'message' => sprintf(
+                    'Processed %d records: %d succeeded, %d failed',
+                    count($data['data']['rows']),
+                    $inserted,
+                    $failed
+                ),
+                'data' => [
+                    'total' => count($data['data']['rows']),
+                    'inserted' => $inserted,
+                    'failed' => $failed
+                ]
+            ]));
+    }
+
+
+
+}

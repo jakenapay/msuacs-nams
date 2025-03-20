@@ -1,0 +1,81 @@
+# ==============================
+# ✅ ENVIRONMENT & CONFIGURATION
+# ==============================
+.env
+*.env
+application/config/database.php        # Exclude database config (sensitive)
+application/config/config.php          # Exclude main config (optional, if contains sensitive info)
+application/config/email.php           # Exclude email config (optional)
+application/config/constants.php       # Exclude constants (optional)
+
+# ==============================
+# ✅ LOGS, CACHE, & TEMP FILES
+# ==============================
+application/logs/*
+application/cache/*
+writable/*
+!application/logs/index.html           # Keep index.html
+!application/cache/index.html          # Keep index.html
+
+# ==============================
+# ✅ COMPOSER & VENDOR (if using Composer)
+# ==============================
+composer.lock
+vendor/
+
+# ==============================
+# ✅ NODE MODULES (if using npm)
+# ==============================
+node_modules/
+
+# ==============================
+# ✅ IDE & EDITOR CONFIG FILES
+# ==============================
+*.idea/                                # PHPStorm / WebStorm
+*.vscode/                              # Visual Studio Code
+*.DS_Store                             # macOS cache files
+*.bak                                  # Backup files
+
+# ==============================
+# ✅ OS-SPECIFIC FILES
+# ==============================
+Thumbs.db                              # Windows thumbnail cache
+ehthumbs.db                            # Windows Explorer cache
+Desktop.ini                            # Windows Explorer config
+.DS_Store                              # macOS cache
+
+# ==============================
+# ✅ CI3 UPLOADS & USER FILES (Optional)
+# ==============================
+uploads/*
+user_files/*
+files/*                                # Custom user-generated folders
+assets/uploads/*
+assets/images/uploads/*
+public/uploads/*
+
+# ==============================
+# ✅ GIT & CI CONFIG
+# ==============================
+.gitignore                             # Ignore itself
+.gitlab-ci.yml                         # GitLab CI config
+.github/                               # GitHub Actions config (optional)
+
+# ==============================
+# ✅ OTHER UNNECESSARY FILES
+# ==============================
+*.log                                  # Log files
+*.sql                                  # SQL dumps
+*.sql.gz                               # Compressed SQL dumps
+*.zip                                  # Compressed archives
+*.tar                                  # Tar archives
+*.tar.gz                               # Tar compressed archives
+*.rar                                  # RAR archives
+
+# ==============================
+# ✅ ENVIRONMENT BACKUPS
+# ==============================
+*.bak                                  # Backup files
+*.old                                  # Old config files
+*.swp                                  # Swap files
+*.swo                                  # Swap files

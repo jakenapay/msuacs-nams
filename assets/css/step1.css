@@ -1,0 +1,208 @@
+/****************STEP 1 FORM STYLES******************/
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+video{
+    /* This section calls the fadeIn animation we defined above */
+    animation: .5s ease-in 0s 1 fadeIn;
+}
+
+.step1-container{
+    width: auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.camera-section{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.camera-section button{
+    font-size: .9rem;
+    border: none;
+    width: 15rem;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: hsl(0, 0%, 7%);
+    color: white;
+    box-shadow: 2px 2px 10px 0px hsl(0, 0%, 54%);
+    transition: background-color ease .5s;
+}
+
+.camera-section button:hover{
+    background-color: hsl(0, 0%, 19%);
+}
+
+.camera-section form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+video{
+    height: 15rem;
+    width: 15rem;
+    border-radius: 50%;
+    margin: 20px 0px;
+    object-fit: cover;
+    box-shadow: 2px 2px 10px 0px hsla(0, 0%, 78%, 0.753);
+}
+
+video.form-error{
+    border: 1px solid red;
+}
+
+.capture-buttons button{
+    width: 7rem;
+    margin: 0px 5px 120px 5px;
+    padding: 10px;
+    transition: background-color ease .5s;
+}
+
+.capture-buttons button#capture-button{
+    width: 8rem;
+    background-color: rgb(37, 131, 18);
+}
+
+.capture-buttons button#capture-button:hover{
+    background-color: rgb(50, 167, 26);
+}
+
+.capture-buttons button#reset-button{
+    background-color: rgb(185, 16, 16);
+}
+
+.capture-buttons button#reset-button:hover{
+    background-color: rgb(226, 45, 45);
+}
+
+img#image-result{
+    margin: 20px 0px;
+}
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-20%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+@keyframes slideInFromBotton{
+    0% {
+        transform: translateY(30%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-20%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(20%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.camera-section #submit{  
+    animation: 1.5s ease 0s 1 fadeIn;
+}
+
+.camera-section{  
+    animation: 1.5s ease 0s 1 slideInFromRight;
+}
+
+
+/****************RESPONSIVE STYLES******************/
+/* Small devices (portrait tablets and large phones, 600px between 992px) */
+@media only screen and (min-width: 600px) {
+
+    
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    body{
+        background-color: rgb(255, 255, 255);
+        overflow: hidden;
+
+
+    }
+    
+    .image-section{
+        width: 50vw;
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+    }
+
+    .camera-section{
+        width: 55vw;
+        background-color: rgb(255, 255, 255);
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    video{
+        height: 25rem;
+        width: 25rem;
+    }
+
+    .capture-buttons button{
+        width: 8rem;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
+}

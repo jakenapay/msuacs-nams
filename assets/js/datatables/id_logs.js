@@ -58,12 +58,7 @@ $(document).ready(function() {
                 title: 'Date',
                 data: 'date',
                 class: 'text-center',
-            },         
-            { 
-                title: 'Remarks',
-                data: 'remarks',
-                class: 'text-center text-capitalize',
-            },
+            },     
         ],
         language: {
             search: "<i class=\"fa fa-search\"></i> Search",

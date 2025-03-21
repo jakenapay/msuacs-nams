@@ -32,7 +32,7 @@
 
 <div class="row mb-2">
     <div class="col-sm-6 mb-2">
-        <label for="id_number">ID Number <span class="text-danger">*</span></label>
+        <label for="id_number">ID Number<span class="text-danger">*</span></label>
         <input type="text" name="id_number" class="form-control <?= form_error('id_number') ? 'form-error' : '' ?>"
             id="id_number" value="<?= set_value('id_number') ?>">
     </div>
@@ -45,7 +45,7 @@
 
 <div class="row mb-2">
     <div class="col-sm-6 mb-2">
-        <label for="status">Status <span class="text-danger">*</span></label>
+        <label for="status">Status<span class="text-danger">*</span></label>
         <select class="form-control <?= form_error('status') ? 'form-error' : '' ?>" name="status" id="status">
             <option value="">Select Status</option>
             <option value="loss">Loss</option>
@@ -54,7 +54,11 @@
     </div>
 
     <div class="col-sm-6 mb-2">
-        <label for="remarks">Remarks <span class="text-danger">*</span></label>
+        <label for="reason">Reason <span class="text-muted">(optional)</span></label>
+        <textarea class="form-control" name="reason" id="reason" placeholder="Enter reason"></textarea>
+    </div>
+    <!-- <div class="col-sm-6 mb-2">
+        <label for="remarks">Remarks<span class="text-danger">*</span></label>
         <select class="form-control <?= form_error('remarks') ? 'form-error' : '' ?>" name="remarks" id="remarks">
             <option value="">Select Remarks</option>
             <option value="Requested new ID">Requested new ID</option>
@@ -69,17 +73,9 @@
             <option value="Duplicate report">Duplicate report</option>
             <option value="other">Other</option>
         </select>
-    </div>
-
+    </div> -->
 </div>
 
-<div class="row mb-2">
-
-    <div class="col-sm-6 mb-2">
-        <label for="reason">Reason <span class="text-danger">*</span></label>
-        <textarea class="form-control" name="reason" id="reason" placeholder="Enter reason" required></textarea>
-    </div>
-</div>
 
 
 

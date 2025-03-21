@@ -84,29 +84,6 @@
             }
         });
 
-        // Handle "Other" selection immediately on change
-        $('#remarks').on('change', function () {
-            if ($(this).val() === 'other') {
-                const customRemark = prompt('Please enter specific remarks:');
-
-                if (customRemark && customRemark.trim() !== '') {
-                    // Add the custom remark dynamically
-                    if ($('#remarks option[value="' + customRemark + '"]').length === 0) {
-                        $('#remarks').append(`<option value="${customRemark}" selected>${customRemark}</option>`);
-                    }
-                    $('#remarks').val(customRemark);
-                } else {
-                    // Reset to default if no input is provided
-                    $(this).val('');
-                    iziToast.warning({
-                        title: 'Warning',
-                        message: 'You must provide a valid remark!',
-                        position: 'topRight'
-                    });
-                }
-            }
-        });
-
         // Handle add button click
         $('#add-row').on('click', '#add-btn', function () {
             $.ajax({
@@ -126,75 +103,9 @@
         });
 
 
-        // Add Button Handle form submission via AJAX
-        // $(document).on('submit', '#addIdLog', function (e) {
-        //     e.preventDefault(); // Prevent default form submission
-
-        //     var formData = new FormData(this);
-
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: $(this).attr('action'),
-        //         data: formData,
-        //         cache: false,
-        //         contentType: false,
-        //         processData: false,
-        //         success: function (response) {
-        //             const serverResponse = JSON.parse(response)
-
-        //             if (serverResponse.status == 200) {
-        //                 success(serverResponse.message, "fa fa-check-circle")
-        //                 $('#modal-add').iziModal('close');
-        //                 $('#idTable').DataTable().ajax.reload();
-        //             }
-        //             else {
-        //                 const errors = serverResponse.message;
-        //                 console.log(errors);
-
-        //                 for (let key in errors) {
-        //                     if (errors.hasOwnProperty(key)) {
-        //                         danger(errors[key], "fa fa-exclamation-triangle");
-        //                     }
-        //                     else {
-        //                         danger(errors, "fa fa-exclamation-triangle")
-        //                     }
-        //                 }
-        //             }
-        //         },
-        //         error: function () {
-        //             iziToast.error({
-        //                 title: 'Error',
-        //                 message: 'An error occurred while submitting the form.',
-        //             });
-        //         }
-        //     });
-        // });
-
         // ✅ Handle form submission with AJAX and "Other" validation
         $(document).on('submit', '#addIdLog', function (e) {
             e.preventDefault();
-
-            const remarks = $('#remarks').val();
-
-            // If remarks is "other", prompt for specific remarks before AJAX submission
-            if (remarks === 'other') {
-                const customRemark = prompt('Please enter specific remarks:');
-
-                if (!customRemark || customRemark.trim() === '') {
-                    iziToast.warning({
-                        title: 'Warning',
-                        message: 'You must provide a valid remark!',
-                        position: 'topRight'
-                    });
-                    return;  // Stop form submission if no valid remark is provided
-                }
-
-                // Add the custom remark dynamically
-                if ($('#remarks option[value="' + customRemark + '"]').length === 0) {
-                    $('#remarks').append(`<option value="${customRemark}" selected>${customRemark}</option>`);
-                }
-                $('#remarks').val(customRemark);
-            }
 
             // Proceed with AJAX submission
             const formData = new FormData(this);
@@ -248,65 +159,6 @@
                         title: 'Error',
                         message: 'An error occurred while submitting the form.',
                         position: 'topRight'
-                    });
-                }
-            });
-        });
-
-        $("#modal-excel-import").iziModal({
-            title: 'Import New Student with Excel',
-            subtitle: 'Add New Students Record via Import',
-            icon: "fas fa-file-excel",
-            headerColor: "linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(94,4,4,1) 0%, rgba(94,4,4,0.6979166666666667) 96%)",
-            width: 1200,
-            fullscreen: true,
-            padding: 20,
-            onOpening: function (modal) {
-                modal.startLoading();
-                $.get(site_url + 'admin/user_management/students/excel_import_form', function (data) {
-                    $("#modal-excel-import").iziModal('setContent', data);
-                    modal.stopLoading();
-                }).fail(function () {
-                    modal.stopLoading();
-                    iziToast.error({
-                        title: 'Error',
-                        message: 'Failed to load the Excel import form.'
-                    });
-                });
-            }
-        });
-
-        $('#excel-import-btn').on('click', function () {
-            $("#modal-excel-import").iziModal('open');
-        });
-
-        // Handle form submission
-        $(document).on('submit', '#excelImportForm', function (e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    const serverResponse = JSON.parse(response);
-                    if (serverResponse.status == 200) {
-                        success(serverResponse.message, "fa fa-check-circle");
-                        $('#modal-excel-import').iziModal('close');
-                        $('#studentsTable').DataTable().ajax.reload();
-                    } else {
-                        danger(serverResponse.message, "fa fa-exclamation-triangle");
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("AJAX error:", status, error);
-                    console.log("Response text:", xhr.responseText);
-                    iziToast.error({
-                        title: 'Error',
-                        message: 'An error occurred while uploading the file.',
                     });
                 }
             });

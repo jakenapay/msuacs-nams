@@ -163,20 +163,14 @@ class SecurityController extends CI_Controller
         date_default_timezone_set('Asia/Manila');
 
         // Validation rules
-        $this->form_validation->set_rules('id_number', 'ID Number', 'required|is_unique[students.id_number]');
+        $this->form_validation->set_rules('id_number', 'ID Number', 'required|trim');
         $this->form_validation->set_rules('rfid', 'RFID', 'required|trim', [
             'required' => 'The RFID is required.'
         ]);
         $this->form_validation->set_rules('status', 'Status', 'required|trim', [
             'required' => 'The Status is required.',
         ]);
-        $this->form_validation->set_rules('remarks', 'Remarks', 'required|trim|min_length[3]|max_length[255]', [
-            'required' => 'The Remarks field is required.',
-            'min_length' => 'Remarks must be at least 3 characters.',
-            'max_length' => 'Remarks cannot exceed 255 characters.'
-        ]);
-        $this->form_validation->set_rules('reason', 'Reason', 'required|trim|min_length[3]|max_length[500]', [
-            'required' => 'The Reason is required.',
+        $this->form_validation->set_rules('reason', 'Reason', 'trim|min_length[3]|max_length[500]', [
             'min_length' => 'Reason must be at least 3 characters.',
             'max_length' => 'Reason cannot exceed 500 characters.'
         ]);
@@ -195,7 +189,6 @@ class SecurityController extends CI_Controller
             'rfid' => $this->input->post('rfid', true),
             'status' => $this->input->post('status', true),
             'reason' => $this->input->post('reason', true),
-            'remarks' => $this->input->post('remarks', true),
             'date' => date('Y-m-d h:i:s A')
         ];
 
